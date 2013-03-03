@@ -16,7 +16,7 @@ my $tempdir = tempdir(CLEANUP => 1);
 
 my $dir = Path::Class::dir($tempdir);
 
-my $git = Git::Wrapper->new($dir);
+my $git = Git::Wrapper->new("$dir");
 
 my $version = $git->version;
 if ( versioncmp( $git->version , '1.5.0') eq -1 ) {
@@ -45,7 +45,8 @@ is_deeply(
   [ 'foo/bar' ],
 );
 
-$git->add(Path::Class::dir('.'));
+my $current_dir = Path::Class::dir('.');
+$git->add("$current_dir");
 is_deeply(
   [ $git->ls_files ],
   [ 'foo/bar' ],
@@ -57,7 +58,7 @@ my $baz = $dir->file('baz');
 
 $baz->spew("world\n");
 
-$git->add($baz);
+$git->add("$baz");
 
 ok(1);
 
